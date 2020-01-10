@@ -1,0 +1,17 @@
+### Pattern to Number 4
+def SYMBOLTONUMBER(c):
+    if c=='A':
+        return 0
+    if c=='C':
+        return 1
+    if c=='G':
+        return 2
+    if c=='T':
+        return 3
+def PATTERNTONUMBER(pattern):
+    if len(pattern)==0:
+        return 0
+    symbol=pattern[-1]
+    prefix=pattern[0:len(pattern)-1]
+    return 4*PATTERNTONUMBER(prefix)+SYMBOLTONUMBER(symbol)
+print(PATTERNTONUMBER("GCGGTAA"))

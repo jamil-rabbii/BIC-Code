@@ -1,0 +1,8 @@
+### Hamming Distance 2
+def HAMMINGDISTANCE(suffix,text):
+    cnt=0
+    for i in range(len(text)):
+        if(suffix[i]!=text[i]):
+            cnt=cnt+1
+    return cnt
+print(HAMMINGDISTANCE("GCGGTAA","GCTGTAC"))

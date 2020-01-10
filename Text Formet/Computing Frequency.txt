@@ -1,0 +1,30 @@
+###COMPUTING FREQUENCIES 3
+def SYMBOLTONUMBER(c):
+    if c=='A':
+        return 0
+    if c=='C':
+        return 1
+    if c=='G':
+        return 2
+    if c=='T':
+        return 3
+def PATTERNTONUMBER(pattern):
+    if len(pattern)==0:
+        return 0
+    symbol=pattern[-1]
+    prefix=pattern[0:len(pattern)-1]
+    return 4*PATTERNTONUMBER(prefix)+SYMBOLTONUMBER(symbol)
+    
+def COMPUTINGFREQUENCIES(text, k):
+    limit=(4**k)-1
+    dic={};
+    for i in range(limit):
+        dic[i]=int(0)
+    size=len(text)-k
+    for i in range(size):
+        pattern=text[i:i+k]
+        print("Pattern=",pattern)
+        j=PATTERNTONUMBER(pattern)
+        dic[j]=dic[j]+1
+    return dic
+print(COMPUTINGFREQUENCIES("ACGTCCGT",4))

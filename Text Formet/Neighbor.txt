@@ -1,0 +1,29 @@
+###Neighbor Finding 8
+def HAMMINGDISTANCE(suffix,text):
+    cnt=0
+    for i in range(len(text)):
+        if(suffix[i]!=text[i]):
+            cnt=cnt+1
+    return cnt
+ 
+def NEIGHBOR(pattern,d):
+    if d==0:
+        return {pattern} #set containing only pattern
+    if len(pattern)==1:
+        return {"A","C","G","T"}
+    Neighborhood=set()
+    SuffixNeighbors=NEIGHBOR(pattern[1:len(pattern)],d)
+ 
+    neucleotide={"A","C","G","T"}
+ 
+    for text in SuffixNeighbors:
+        suffix=pattern[1:len(pattern)]
+        if HAMMINGDISTANCE(suffix,text)<d:
+            for x in neucleotide:
+                Neighborhood.add(x+text)
+        else:
+            Neighborhood.add(pattern[0]+text)
+ 
+    return Neighborhood
+ 
+print(NEIGHBOR("ACT",1))

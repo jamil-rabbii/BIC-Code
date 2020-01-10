@@ -1,0 +1,83 @@
+#Greedy Motif Search 10
+def highest_probability(string, k, matrix):
+    score = 1
+    temp_string = ""
+    c = 0
+    best_string = ""
+    temp = 0
+    while c+k < len(string):
+        for i in range(c, c+k):
+            if string[i] == 'A':
+                score *= matrix[i-c]['A']
+                temp_string += 'A'
+            elif string[i] == 'C':
+                score *= matrix[i-c]['C']
+                temp_string += 'C'
+            elif string[i] == 'G':
+                score *= matrix[i-c]['G']
+                temp_string += 'G'
+            elif string[i] == 'T':
+                score *= matrix[i-c]['T']
+                temp_string += 'T'
+            if i == c+k-1:
+                if score >= temp:
+                    temp = score
+                    best_string = temp_string
+        temp_string=""
+        score=1
+        c+=1
+    #print(best_string)
+    return best_string
+ 
+ 
+def GreedyMotifSearch(DNA, k, t):
+    best_motifs = [i[0:k] for i in DNA]
+    score=0
+    c=0
+    while c+k<len(DNA[0]):
+        k_mer = DNA[0][c:c+k]
+        motif=[k_mer]
+        matrix = make_matrix(k_mer, matrix=[], i=0)
+        for i in range(1, t):
+            compare_string = DNA[i]
+            good_motif = highest_probability(compare_string, k, matrix)
+            motif.append(good_motif)
+            matrix = make_matrix(good_motif, matrix, i)
+        temp_score=1
+        for dictionary in matrix:
+            temp_score *= max(dictionary.values())
+       # print(temp_score)
+        if temp_score > score:
+            score = temp_score
+            best_motifs = motif
+        c+=1
+    return best_motifs
+ 
+ 
+ 
+def make_matrix(string, matrix, i):
+    if len(matrix)==0:
+        for ch in string:
+            new_dict = {'A':0, 'C':0, 'G':0, 'T':0}
+            new_dict[ch] = 1
+            matrix += [new_dict]
+       # print(matrix)
+        return matrix
+    elif len(matrix)==3:
+        for j in range(len(string)):
+            matrix[j][string[j]] += 1
+        Sum = [sum(matrix[0].values()),sum(matrix[1].values()),sum(matrix[2].values())]
+        for columns in range(len(matrix)):
+            for keys in matrix[columns]:
+                matrix[columns][keys] /= Sum[columns]
+        #print(matrix)
+        return matrix 
+ 
+DNA=['GGCGTTCAGGCA',
+'AAGAATCAGTCA',
+'CAAGGAGTTCGC',
+'CACGTCAATCAC',
+'CAATAATATTCG']
+k=3
+t=5
+print(GreedyMotifSearch(DNA, k, t)) 

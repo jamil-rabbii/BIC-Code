@@ -1,0 +1,79 @@
+### CLUMP FINDING 6
+
+### Number to Pattern
+def getVal(k):
+    if k==0:
+        return 'A'
+    if k==1:
+        return 'C'
+    if k==2:
+        return 'G'
+    return 'T'
+def NUMBERTOPATTERN(index, k):
+    initial=index
+    str=""
+    while (k>0):
+        rem=int(initial%4)
+        str=str+getVal(rem)
+        initial=initial/4
+        k=k-1
+    str=str[::-1]
+    return str
+ 
+###Clump Finding####
+def SYMBOLTONUMBER(c):
+    if c=='A':
+        return 0
+    if c=='C':
+        return 1
+    if c=='G':
+        return 2
+    if c=='T':
+        return 3
+ 
+def PATTERNTONUMBER(pattern):
+    if len(pattern)==0:
+        return 0 
+    symbol=pattern[-1]
+    prefix=pattern[0:len(pattern)-1]
+    return 4*PATTERNTONUMBER(prefix)+SYMBOLTONUMBER(symbol)
+ 
+def COMPUTINGFREQUENCIES(text, k):
+    limit=(4**k)
+    dic={};
+    for i in range(limit):
+        dic[i]=int(0)
+    sz=len(text)-k+1
+    for i in range(sz):
+        pattern=text[i:i+k]
+        #print("Pattern=",pattern)
+        j=PATTERNTONUMBER(pattern)
+        dic[j]=dic[j]+1
+    return dic
+ 
+genome="ACGTGCAT"
+k=3
+t=1
+l=4
+genomeSize=len(genome)
+FrequentPatterns=set() #an empty set
+#print(FrequentPatterns)
+limit=(4**k)
+CLUMP={}
+for i in range(limit):
+    CLUMP[i]=0
+sz=genomeSize-l+1
+for i in range(sz):
+    txt=genome[i:i+l]
+    #print("txt=",txt)
+    FREQUENCYARRAY=COMPUTINGFREQUENCIES(txt,k)
+    #print(FREQUENCYARRAY)
+    for i in range(limit):
+        if(FREQUENCYARRAY[i]>=t):
+            CLUMP[i]=1
+for i in range(limit):
+    if CLUMP[i]==1:
+        pattern=NUMBERTOPATTERN(i,k)
+       # if pattern!=None:
+        FrequentPatterns.add(pattern)
+print(FrequentPatterns)
